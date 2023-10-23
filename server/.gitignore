@@ -1,0 +1,4 @@
+# Archivos y directorios generados por Node.js y npm en el backend
+node_modules/
+package-lock.json
+yarn-error.log

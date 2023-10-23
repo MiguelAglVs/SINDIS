@@ -1,0 +1,7 @@
+# Configuración de enrutamiento en Netlify
+base = "/client"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
