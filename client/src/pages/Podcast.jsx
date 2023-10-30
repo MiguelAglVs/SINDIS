@@ -7,7 +7,7 @@ const Podcast = () => {
     <>
       <Navigation />
       <section className="knowledge">
-        <div className="container mt-5">
+        <div className="container container-landing mt-5">
             <div className="row">
               <div className="col-sm-12 mb-3 mb-sm-4">
                 <div className="card">

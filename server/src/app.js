@@ -6,6 +6,7 @@ const app = express();
 
 const AdminRoutes = require("./routes/admin");
 const AuthRoutes = require("./routes/auth.routes");
+const RolRoutes = require("./routes/rol.routes");
 
 // Configuración
 app.set("port", process.env.PORT || 3000);
@@ -19,7 +20,7 @@ const corsOptions = {
 };
 
 // Middleware
-app.use(cors(corsOptions)); // Coloca esto primero
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
@@ -32,5 +33,6 @@ app.get("/", (req, res) => {
 // Rutas API
 app.use("/api/admin", AdminRoutes);
 app.use("/api", AuthRoutes);
+app.use("/api", RolRoutes);
 
 module.exports = app;

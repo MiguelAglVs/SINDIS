@@ -24,7 +24,7 @@ body {
   min-height: 100vh;
 }
 
-.container {
+.container-landing {
 
   padding: var(--padding-container);
 }

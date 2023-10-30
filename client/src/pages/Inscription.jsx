@@ -7,7 +7,7 @@ const Inscription = () => {
   return (
     <>
       <Navigation />
-      <div className="container p-5 mt-5">
+      <div className="container-landing p-5 mt-5">
       <div className="container-sm pt-5">
         <form className="row">
           <div className="col-md-6">

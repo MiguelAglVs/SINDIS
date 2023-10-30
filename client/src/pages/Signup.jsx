@@ -85,7 +85,6 @@ const Signup = () => {
 
     try {
       await axios.post("http://localhost:3000/api/register", newAdmin);
-      // Mostrar SweetAlert2 en caso de éxito
       Swal.fire({
         icon: "success",
         title: "Éxito",
@@ -107,7 +106,6 @@ const Signup = () => {
   };
 
   if (redirectToHome) {
-    // window.location.href = "/Login";
     navigate("/Login");
   }
 
@@ -115,7 +113,7 @@ const Signup = () => {
     <>
     <Navigation />
       <section className="knowledge">
-        <div className="container">
+        <div className="container-landing">
           <form className="form" id="formulario" onSubmit={enviarDatos}>
             <h2 className="form__title">Registrarse</h2>
             <p className="form__paragraph">
@@ -127,9 +125,9 @@ const Signup = () => {
             <div className="form__container">
               <div className="form__group">
                 <input
+                  className="form__input"
                   type="text"
                   id="name"
-                  className="form__input"
                   placeholder=""
                   name="Nombre"
                   value={values.Nombre}
@@ -143,9 +141,9 @@ const Signup = () => {
               </div>
               <div className="form__group">
                 <input
-                  type="mail"
-                  id="mail"
                   className="form__input"
+                  type="email"
+                  id="email"
                   placeholder=""
                   name="Correo"
                   value={values.Correo}
@@ -159,9 +157,9 @@ const Signup = () => {
               </div>
               <div className="form__group">
                 <input
+                  className="form__input"
                   type="password"
                   id="pass"
-                  className="form__input"
                   placeholder=""
                   name="Contrasena"
                   value={values.Contrasena}

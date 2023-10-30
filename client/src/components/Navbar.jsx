@@ -41,31 +41,31 @@ class Navbar extends Component {
     const { isMenuOpen } = this.state;
 
     // Verifica si hay un token en las cookies
-    // const token = Cookies.get("token");
-    // const logout = () => {
-    //   // Muestra una ventana de confirmación antes de realizar el logout
-    //   Swal.fire({
-    //     title: "¿Estás seguro?",
-    //     text: "¿Quieres cerrar la sesión?",
-    //     icon: "question",
-    //     showCancelButton: true,
-    //     confirmButtonText: "Sí, cerrar sesión",
-    //     cancelButtonText: "Cancelar",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       // Elimina el token de las cookies
-    //       Cookies.remove("token");
-    //       // Redirige al usuario a la página de inicio de sesión
-    //       window.location.href = "/login";
-    //     }
-    //   });
-    // };
+    const token = Cookies.get("token");
+    const logout = () => {
+      // Muestra una ventana de confirmación antes de realizar el logout
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¿Quieres cerrar la sesión?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, cerrar sesión",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Elimina el token de las cookies
+          Cookies.remove("token");
+          // Redirige al usuario a la página de inicio de sesión
+          window.location.href = "/login";
+        }
+      });
+    };
 
     return (
       <>
         <header>
           <a href="/" className="nav__logo">
-            <img src={logo} alt="Logo" width={80}/>
+            <img src={logo} alt="Logo" width={80} />
           </a>
           <nav>
             <ul
@@ -89,13 +89,21 @@ class Navbar extends Component {
                 </li>
               ))}
               {/* Renderiza el botón de inicio de sesión solo si no hay un token */}
-              {/* {token && (
+              {token && (
                 <li className="content__item nav__item">
-                  <Link onClick={logout} className="Icono">
-                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                  </Link>
+                  <NavLink
+                    to="/Dashboard"
+                    className={(navClass) =>
+                      navClass.isActive
+                        ? "link-nav link--leda active"
+                        : "link-nav link--leda"
+                    }
+                    data-text="Administracion"
+                  >
+                    <span>Administracion</span>
+                  </NavLink>
                 </li>
-              )} */}
+              )}
               <img
                 src={close}
                 className="nav__close"

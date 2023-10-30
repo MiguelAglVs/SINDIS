@@ -6,7 +6,7 @@
   --primary-color: #ee9d46;
   --primary-color-light: #ee9d461b;
   --toggle-color: #ddd;
-  --text-color: #707070;
+  --text-color: #fff;
 
   --tran-02: all 0.2s ease;
   --tran-03: all 0.3s ease;
@@ -25,13 +25,13 @@
   color: var(--sidebar-color);
 }
 
-.body.dark {
+/* .body.dark {
   --body-color: #333;
   --sidebar-color: #242526;
   --primary-color-light: #333;
   --toggle-color: #fff;
   --text-color: #ccc;
-}
+} */
 
 .sidebar {
   position: fixed;
@@ -86,13 +86,12 @@
 
 .sidebar .text,
 .sidebar .icon {
-  color: var(--text-color);
+  color: #000;
   transition: var(--tran-02);
 }
 
 .active .text,
 .active .icon {
-  color: var(--text-color);
   transition: var(--tran-02);
 }
 

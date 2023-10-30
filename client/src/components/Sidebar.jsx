@@ -92,12 +92,12 @@ const Sidebar = () => {
             </li>
             <li className={`navlink ${isActive === "users" ? "activo" : ""}`}>
               <NavLink
-                to="/Dashboard/Users"
+                to="/Dashboard/Admin"
                 exact="true"
                 onClick={() => setIsActive("users")}
               >
-                <i className="fa-solid fa-user-large icon"></i>
-                <span className="text nav-text">Usuarios</span>
+                <i className="fa-solid fa-gears icon"></i>
+                <span className="text nav-text">Usuarios y roles</span>
               </NavLink>
             </li>
             <li className={`navlink ${isActive === "content" ? "activo" : ""}`}>
@@ -106,7 +106,7 @@ const Sidebar = () => {
                 exact="true"
                 onClick={() => setIsActive("content")}
               >
-                <i className="fa-solid fa-chart-simple icon"></i>
+                <i className="fa-regular fa-images icon"></i>
                 <span className="text nav-text">Contenido</span>
               </NavLink>
             </li>

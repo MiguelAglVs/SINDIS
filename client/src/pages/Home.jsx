@@ -124,7 +124,7 @@ class Home extends Component {
             </p>
 
             <div className="about__main">
-              <article className="container text-center py-1">
+              <article className="container-landing text-center py-1">
                 <img
                   src={goal}
                   className="about__icon py-4"
@@ -140,7 +140,7 @@ class Home extends Component {
                 </p>
               </article>
 
-              <article className="container text-center py-1">
+              <article className="container-landing text-center py-1">
                 <img
                   src={view}
                   className="about__icon py-4"

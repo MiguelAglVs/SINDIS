@@ -1,7 +1,4 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-
-import Home from "./Home";
 
 const HomeD = () => {
   return (
@@ -76,6 +73,3 @@ const HomeD = () => {
 };
 
 export default HomeD;
-
-
-// SELECT COUNT(*) FROM ADMINISTRADORES

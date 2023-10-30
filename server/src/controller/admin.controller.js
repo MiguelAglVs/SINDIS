@@ -6,14 +6,20 @@ const adminCtrl = {};
 
 adminCtrl.getAdmins = async (req, res) => {
   try {
-    const sql = `SELECT * FROM ADMINISTRADORES WHERE Estado_Admin = 1`;
+    const sql =
+    `SELECT A.*, R.Nombre_Rol
+    FROM ADMINISTRADORES A
+    LEFT JOIN ROLES R ON A.Rol_Admin = R.Id_Rol
+    WHERE A.Estado_Admin = 1
+    ORDER BY A.Id_Admin ASC`;
+
     const result = await BD.executeQuery(sql, [], false);
     const admins = result.rows.map((admin) => ({
       Id_Admin: admin[0],
       Nombre_Admin: admin[1],
       Correo_Admin: admin[2],
       Contrasena_Admin: admin[3],
-      Rol_Admin: admin[4],
+      Rol_Admin: admin[6],
       Estado_Admin: admin[5],
     }));
     res.json(admins);
@@ -24,23 +30,31 @@ adminCtrl.getAdmins = async (req, res) => {
 };
 
 adminCtrl.createAdmin = async (req, res) => {
-  const { Nombre_Admin, Correo_Admin, Contrasena_Admin } = req.body;
+  const { Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin } = req.body;
   try {
     // Encriptar la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(Contrasena_Admin, 10);
 
+    // Definir el valor predeterminado del rol (1 si no se proporciona un rol específico)
+    const rolPredeterminado = Rol_Admin || 1;
+
     const sql = `INSERT INTO ADMINISTRADORES (Id_Admin, Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin, Estado_Admin)
-    VALUES (seq_administradores.NEXTVAL, :Nombre_Admin, :Correo_Admin, :Contrasena_Admin, 1, 1)`;
+    VALUES (seq_administradores.NEXTVAL, :Nombre_Admin, :Correo_Admin, :Contrasena_Admin, :Rol_Admin, 1)`;
 
     await BD.executeQuery(
       sql,
-      { Nombre_Admin, Correo_Admin, Contrasena_Admin: hashedPassword },
+      { Nombre_Admin, Correo_Admin, Contrasena_Admin: hashedPassword, Rol_Admin: rolPredeterminado },
       true
     );
+
     const token = await createAccessToken({ id: Nombre_Admin });
     // Crear un token JWT y enviarlo en la respuesta
     res.cookie("token", token);
-    res.json({ message: "Administrador creado correctamente" });
+
+    // Agregar el valor del rol a la respuesta
+    res.json({
+      message: "Administrador creado correctamente"
+    });
   } catch (error) {
     console.error("Error al crear el administrador:", error);
     res
@@ -48,6 +62,7 @@ adminCtrl.createAdmin = async (req, res) => {
       .json({ error: "Error interno del servidor", message: error.message });
   }
 };
+
 
 adminCtrl.getAdmin = async (req, res) => {
   try {

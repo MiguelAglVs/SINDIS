@@ -5,23 +5,36 @@ const bcrypt = require("bcrypt");
 const authCtrl = {};
 
 authCtrl.register = async (req, res) => {
-  const { Nombre_Admin, Correo_Admin, Contrasena_Admin } = req.body;
+  const { Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin } = req.body;
   try {
     // Encriptar la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(Contrasena_Admin, 10);
 
+    // Definir el valor predeterminado del rol (1 si no se proporciona un rol específico)
+    const rolPredeterminado = Rol_Admin || 1;
+
     const sql = `INSERT INTO ADMINISTRADORES (Id_Admin, Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin, Estado_Admin)
-	  VALUES (seq_administradores.NEXTVAL, :Nombre_Admin, :Correo_Admin, :Contrasena_Admin, 1, 1)`;
+    VALUES (seq_administradores.NEXTVAL, :Nombre_Admin, :Correo_Admin, :Contrasena_Admin, :Rol_Admin, 1)`;
 
     await BD.executeQuery(
       sql,
-      { Nombre_Admin, Correo_Admin, Contrasena_Admin: hashedPassword },
+      {
+        Nombre_Admin,
+        Correo_Admin,
+        Contrasena_Admin: hashedPassword,
+        Rol_Admin: rolPredeterminado,
+      },
       true
     );
+
     const token = await createAccessToken({ id: Nombre_Admin });
     // Crear un token JWT y enviarlo en la respuesta
     res.cookie("token", token);
-    res.json({ message: "Administrador creado correctamente" });
+
+    // Agregar el valor del rol a la respuesta
+    res.json({
+      message: "Administrador creado correctamente"
+    });
   } catch (error) {
     console.error("Error al crear el administrador:", error);
     res
@@ -34,8 +47,7 @@ authCtrl.login = async (req, res) => {
   const { Nombre_Admin, Correo_Admin, Contrasena_Admin } = req.body;
   try {
     // Consultar la base de datos para encontrar al administrador por nombre o correo
-    const checkAdminSql =
-    `SELECT A.*, R.Nombre_Rol
+    const checkAdminSql = `SELECT A.*, R.Nombre_Rol
       FROM ADMINISTRADORES A
       LEFT JOIN ROLES R ON A.Rol_Admin = R.Id_Rol
       WHERE A.Nombre_Admin = :Nombre_Admin OR A.Correo_Admin = :Correo_Admin`;
@@ -58,12 +70,12 @@ authCtrl.login = async (req, res) => {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
-    // // Si las contraseñas coinciden, crear un token JWT y enviarlo en la respuesta
+    // Si las contraseñas coinciden, crear un token JWT y enviarlo en la respuesta
     const token = await createAccessToken({
       id: checkAdminResult.rows[0][0],
       nombre: checkAdminResult.rows[0][1],
       correo: checkAdminResult.rows[0][2],
-      rol: checkAdminResult.rows[0][6]
+      rol: checkAdminResult.rows[0][6],
     });
     res.cookie("token", token);
     res.json({ message: "Inicio de sesión exitoso", token: token });

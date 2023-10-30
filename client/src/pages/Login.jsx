@@ -17,10 +17,8 @@ const Login = () => {
   const [redirectToHome, setRedirectToHome] = useState(false);
 
   useEffect(() => {
-    // Verificar si ya hay un token en las cookies
     const token = Cookies.get("token");
     if (token) {
-      // Si hay un token, redirigir a la página de inicio
       setRedirectToHome(true);
     }
   }, []);
@@ -55,7 +53,7 @@ const Login = () => {
           text: "¡Bienvenido!",
         }).then((result) => {
           if (result.isConfirmed) {
-            setRedirectToHome(true); // Redirigir a la página de inicio
+            setRedirectToHome(true);
           }
         });
       } else {
@@ -83,7 +81,7 @@ const Login = () => {
     <>
       <Navigation />
       <section className="knowledge">
-        <div className="container">
+        <div className="container-landing">
           <form className="form" onSubmit={enviarDatos}>
             <h2 className="form__title">Inicia Sesión</h2>
             <p className="form__paragraph">

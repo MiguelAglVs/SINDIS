@@ -28,9 +28,9 @@ const Navbar = () => {
   return (
     <>
       <div className="container-fluid mx-3">
-        <Link className="navbar-brand" aria-label="abrir menu">
-          <i className="fa-solid fa-bars-staggered toggle icon"></i>
-        </Link>
+        <button className="navbar-brand btn toggle" aria-label="abrir menu">
+          <i className="fa-solid fa-bars-staggered icon"></i>
+        </button>
         <div className="" id="navbarNavDropdown">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item dropdown">
