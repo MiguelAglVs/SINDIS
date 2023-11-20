@@ -6,32 +6,16 @@
   --primary-color: #ee9d46;
   --primary-color-light: #ee9d461b;
   --toggle-color: #ddd;
-  --text-color: #fff;
 
   --tran-02: all 0.2s ease;
   --tran-03: all 0.3s ease;
   --tran-04: all 0.4s ease;
 }
 
-.body {
-  min-height: 100vh;
-  background-color: var(--body-color);
-  transition: var(--tran-04);
-  color: var(--text-color);
-}
-
 ::selection {
   background-color: var(--primary-color);
   color: var(--sidebar-color);
 }
-
-/* .body.dark {
-  --body-color: #333;
-  --sidebar-color: #242526;
-  --primary-color-light: #333;
-  --toggle-color: #fff;
-  --text-color: #ccc;
-} */
 
 .sidebar {
   position: fixed;
@@ -40,10 +24,9 @@
   height: 100%;
   width: 250px;
   padding: 10px 14px;
-  background: var(--sidebar-color);
   transition: var(--tran-04);
   z-index: 100;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .sidebar.close {
@@ -93,6 +76,7 @@
 .active .text,
 .active .icon {
   transition: var(--tran-02);
+  /* color: #fff; */
 }
 
 .sidebar .text {
@@ -119,26 +103,6 @@
 .sidebar .header-sidebar .image img {
   width: 0px;
   border-radius: 50%;
-}
-
-.sidebar .header-sidebar .toggle {
-  position: absolute;
-  top: 20%;
-  right: 0;
-  height: 35px;
-  width: 35px;
-  background-color: var(--primary-color);
-  color: var(--sidebar-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-  cursor: pointer;
-  transition: var(--tran-04);
-}
-
-.body.dark .sidebar .header-sidebar .toggle {
-  color: var(--text-color);
 }
 
 .sidebar.close .toggle {

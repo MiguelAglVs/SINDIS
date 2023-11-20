@@ -7,16 +7,18 @@ const app = express();
 const AdminRoutes = require("./routes/admin");
 const AuthRoutes = require("./routes/auth.routes");
 const RolRoutes = require("./routes/rol.routes");
+const ContentRoutes = require("./routes/content.routes");
+const EpsRoutes = require("./routes/eps.routes");
 
 // Configuración
 app.set("port", process.env.PORT || 3000);
 
 // Configuración de CORS
 const corsOptions = {
-  origin: "*", // Reemplaza con el dominio de tu frontend
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Habilitar el envío de cookies de sesión
-  optionsSuccessStatus: 204, // Establece el código de respuesta para las pre-solicitudes OPTIONS
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
 
 // Middleware
@@ -34,5 +36,7 @@ app.get("/", (req, res) => {
 app.use("/api/admin", AdminRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", RolRoutes);
+app.use("/api", ContentRoutes);
+app.use("/api", EpsRoutes);
 
 module.exports = app;

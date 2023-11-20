@@ -25,7 +25,6 @@ body {
 }
 
 .container-landing {
-
   padding: var(--padding-container);
 }
 
@@ -448,14 +447,22 @@ nav {
   background: #fff;
   margin: auto;
   text-align: center;
-  width: 90%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 700px;
   padding: 4.5em 3em;
   border-radius: 10px;
   box-shadow: 0 5px 10px -5px rgb(0 0 0 / 30%);
 }
 
-.form__signup {
+.form__link {
+  font-weight: 600;
+  display: inline;
+  padding-left: 5px;
+  color: #000;
+  text-decoration: none;
+}
+
+/* .form__signup {
   width: 90%;
   max-width: 1000px;
 }
@@ -478,13 +485,7 @@ nav {
   padding-bottom: 3em;
 }
 
-.form__link {
-  font-weight: 600;
-  display: inline;
-  padding-left: 5px;
-  color: #000;
-  text-decoration: none;
-}
+
 
 .form__link:hover {
   color: var(--primaryColor);
@@ -492,7 +493,7 @@ nav {
 
 .form__container {
   margin-bottom: 3em;
-  height: 80%;
+  height: 40%;
   display: grid;
   gap: 2.5em;
   margin-bottom: 0;
@@ -565,7 +566,7 @@ nav {
 .form__input:focus ~ .form__line,
 .form__input:not(:placeholder-shown) ~ .form__line {
   transform: scale(1);
-}
+} */
 
 /* Footer */
 
@@ -770,6 +771,16 @@ nav {
 }
 
 @media (max-width: 600px) {
+
+  .form{
+    width: 100%;
+    padding: 2em 1em;
+  }
+
+  .form__label{
+    padding: 0 25px;
+  }
+
   .hero__title {
     font-size: 2rem;
   }

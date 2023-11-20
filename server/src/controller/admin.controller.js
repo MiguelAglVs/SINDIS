@@ -6,23 +6,26 @@ const adminCtrl = {};
 
 adminCtrl.getAdmins = async (req, res) => {
   try {
-    const sql =
-    `SELECT A.*, R.Nombre_Rol
-    FROM ADMINISTRADORES A
-    LEFT JOIN ROLES R ON A.Rol_Admin = R.Id_Rol
-    WHERE A.Estado_Admin = 1
-    ORDER BY A.Id_Admin ASC`;
+    const sql = `SELECT u.*, r.nombre as nombre_rol
+    FROM usuarios u
+    LEFT JOIN roles r ON u.rol = r.id
+    WHERE u.estado = 1
+    ORDER BY u.dni DESC`;
 
     const result = await BD.executeQuery(sql, [], false);
-    const admins = result.rows.map((admin) => ({
-      Id_Admin: admin[0],
-      Nombre_Admin: admin[1],
-      Correo_Admin: admin[2],
-      Contrasena_Admin: admin[3],
-      Rol_Admin: admin[6],
-      Estado_Admin: admin[5],
+    const usuarios = result.rows.map((usuario) => ({
+      dni: usuario[0],
+      nombre: usuario[1],
+      Papellido: usuario[2],
+      Sapellido: usuario[3],
+      correo: usuario[4],
+      contrasena: usuario[5],
+      direccion: usuario[6],
+      telefono: usuario[7],
+      estado: usuario[8],
+      rol: usuario[10],
     }));
-    res.json(admins);
+    res.json(usuarios);
   } catch (error) {
     console.error("Error al obtener usuarios:", error.message);
     res.status(500).json({ error: "Error al obtener usuarios" });
@@ -30,59 +33,82 @@ adminCtrl.getAdmins = async (req, res) => {
 };
 
 adminCtrl.createAdmin = async (req, res) => {
-  const { Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin } = req.body;
+  const {
+    cedula,
+    nombre,
+    apellido,
+    segundo_apellido,
+    direccion,
+    telefono,
+    correo,
+    contrasena,
+    rol,
+  } = req.body;
   try {
     // Encriptar la contraseña antes de guardarla
-    const hashedPassword = await bcrypt.hash(Contrasena_Admin, 10);
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
 
     // Definir el valor predeterminado del rol (1 si no se proporciona un rol específico)
-    const rolPredeterminado = Rol_Admin || 1;
+    const rolPredeterminado = rol || 1;
 
-    const sql = `INSERT INTO ADMINISTRADORES (Id_Admin, Nombre_Admin, Correo_Admin, Contrasena_Admin, Rol_Admin, Estado_Admin)
-    VALUES (seq_administradores.NEXTVAL, :Nombre_Admin, :Correo_Admin, :Contrasena_Admin, :Rol_Admin, 1)`;
+    const sql = `INSERT INTO usuarios (dni, nombre, p_apellido, s_apellido, correo, contrasenia, direccion, telefono, estado, rol)
+                 VALUES (:cedula, :nombre, :apellido, :segundo_apellido, :correo, :contrasena, :direccion, :telefono, 1, :rol)`;
 
     await BD.executeQuery(
       sql,
-      { Nombre_Admin, Correo_Admin, Contrasena_Admin: hashedPassword, Rol_Admin: rolPredeterminado },
+      {
+        cedula,
+        nombre,
+        apellido,
+        segundo_apellido,
+        direccion,
+        telefono,
+        correo,
+        contrasena: hashedPassword,
+        rol: rolPredeterminado,
+      },
       true
     );
 
-    const token = await createAccessToken({ id: Nombre_Admin });
+    const token = await createAccessToken({ id: nombre });
     // Crear un token JWT y enviarlo en la respuesta
     res.cookie("token", token);
 
     // Agregar el valor del rol a la respuesta
     res.json({
-      message: "Administrador creado correctamente"
+      message: "Usuario creado correctamente",
     });
   } catch (error) {
-    console.error("Error al crear el administrador:", error);
+    console.error("Error al crear el usuario:", error);
     res
       .status(500)
       .json({ error: "Error interno del servidor", message: error.message });
   }
 };
 
-
 adminCtrl.getAdmin = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = `SELECT * FROM ADMINISTRADORES WHERE Id_Admin = :id`;
+    const sql = `SELECT * FROM usuarios WHERE dni = :id`;
     const result = await BD.executeQuery(sql, { id: id }, false);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Administrador no encontrado" });
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    const admin = result.rows.map((admin) => ({
-      Id_Admin: admin[0],
-      Nombre_Admin: admin[1],
-      Correo_Admin: admin[2],
-      Contrasena_Admin: admin[3],
-      Rol_Admin: admin[4],
-      Estado_Admin: admin[5],
+    const usuarios = result.rows.map((usuario) => ({
+      dni: usuario[0],
+      nombre: usuario[1],
+      Papellido: usuario[2],
+      Sapellido: usuario[3],
+      correo: usuario[4],
+      contrasena: usuario[5],
+      direccion: usuario[6],
+      telefono: usuario[7],
+      Estado: usuario[8],
+      rol: usuario[9],
     }));
-    res.json(admin);
+    res.json(usuarios);
   } catch (error) {
     console.error("Error al obtener el administrador:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -93,25 +119,25 @@ adminCtrl.deleteAdmin = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const admin = await BD.executeQuery(
-      "SELECT * FROM ADMINISTRADORES WHERE Id_Admin = :id",
+    const usuario = await BD.executeQuery(
+      "SELECT * FROM usuarios WHERE dni = :id",
       { id },
       true
     );
 
-    if (!admin) {
-      return res.status(404).json({ error: "Administrador no encontrado" });
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
     await BD.executeQuery(
-      "UPDATE ADMINISTRADORES SET Estado_Admin = 2 WHERE Id_Admin = :id",
+      "UPDATE usuarios SET estado = 2 WHERE dni = :id",
       { id },
       true
     );
 
-    res.json({ message: "Administrador eliminado" });
+    res.json({ message: "Usuario eliminado" });
   } catch (error) {
-    console.error("Error al eliminar el administrador:", error);
+    console.error("Error al eliminar el usuario:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
@@ -120,45 +146,74 @@ adminCtrl.updateAdmin = async (req, res) => {
   try {
     const id = req.params.id;
     const {
-      Nombre_Admin,
-      Correo_Admin,
-      Contrasena_Admin,
-      Rol_Admin,
-      Estado_Admin,
+      nombre,
+      apellido,
+      segundo_apellido,
+      direccion,
+      telefono,
+      correo,
+      contrasena,
+      rol,
     } = req.body;
 
-    const checkAdminSql = `SELECT * FROM ADMINISTRADORES WHERE Id_Admin = :id`;
-    const checkAdminResult = await BD.executeQuery(
-      checkAdminSql,
-      { id: id },
+    const checkUsuarioSql = `SELECT * FROM usuarios WHERE dni = :id`;
+    const checkUsuarioResult = await BD.executeQuery(
+      checkUsuarioSql,
+      { id },
       false
     );
 
-    if (checkAdminResult.rows.length === 0) {
-      return res.status(404).json({ message: "Administrador no encontrado" });
+    if (checkUsuarioResult.rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    const hashedPassword = await bcrypt.hash(Contrasena_Admin, 10);
+    let hashedPassword = null;
 
-    const updateAdminSql = `
-      UPDATE ADMINISTRADORES
-      SET Nombre_Admin = :nombre, Correo_Admin = :correo, Contrasena_Admin = :contrasena, Rol_Admin = :rol, Estado_Admin = :estado
-      WHERE Id_Admin = :id
+    if (contrasena) {
+      hashedPassword = await bcrypt.hash(contrasena, 10);
+    }
+
+    const updateUsuarioSql = `
+          UPDATE usuarios
+          SET
+              nombre = COALESCE(:nombre, nombre),
+              p_apellido = COALESCE(:apellido, p_apellido),
+              s_apellido = COALESCE(:segundo_apellido, s_apellido),
+              correo = COALESCE(:correo, correo),
+              contrasenia = COALESCE(:contrasena, contrasenia),
+              direccion = COALESCE(:direccion, direccion),
+              telefono = COALESCE(TO_NUMBER(:telefono), telefono),
+              estado = COALESCE(TO_NUMBER(1), estado),
+              rol = COALESCE(TO_NUMBER(:rol), rol)
+          WHERE
+              dni = :id
     `;
-    await BD.executeQuery(
-      updateAdminSql,
+
+    // Ejecutar la consulta de actualización y capturar el resultado
+    const result = await BD.executeQuery(
+      updateUsuarioSql,
       {
-        nombre: Nombre_Admin,
-        correo: Correo_Admin,
-        contrasena: hashedPassword,
-        rol: Rol_Admin,
-        estado: Estado_Admin,
         id: id,
+        nombre: nombre,
+        apellido: apellido,
+        segundo_apellido: segundo_apellido,
+        direccion: direccion,
+        telefono: telefono,
+        correo: correo,
+        contrasena: hashedPassword,
+        rol: rol,
       },
       true
     );
 
-    res.json({ message: "Administrador actualizado" });
+    console.log(id);
+    console.log(result);
+    // Verificar si la consulta se ejecutó correctamente
+    if (result) {
+      res.json({ message: "Administrador actualizado" });
+    } else {
+      res.status(500).json({ error: "Error al actualizar el administrador" });
+    }
   } catch (error) {
     console.error("Error al actualizar el administrador:", error);
     res.status(500).json({ error: "Error interno del servidor" });

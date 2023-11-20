@@ -3,16 +3,16 @@ const BD = require("../database");
 const rolCtrl = {};
 
 rolCtrl.createRol = async (req, res) => {
-  const { Nombre_Rol } = req.body;
+  const { nombre } = req.body;
   try {
 
-    const sql = `INSERT INTO ROLES (ID_ROL, NOMBRE_ROL)
-    VALUES (seq_roles.NEXTVAL, :Nombre_Rol)`;
+    const sql = `INSERT INTO ROLES (id, nombre)
+    VALUES (seq_roles.NEXTVAL, :nombre)`;
 
     await BD.executeQuery(
       sql,
       {
-        Nombre_Rol
+        nombre
       },
       true
     );
@@ -30,12 +30,12 @@ rolCtrl.createRol = async (req, res) => {
 
 rolCtrl.getRoles = async (req, res) => {
   try {
-    const sql = `SELECT * FROM ROLES`;
+    const sql = `SELECT * FROM roles`;
 
     const result = await BD.executeQuery(sql, [], false);
     const roles = result.rows.map((roles) => ({
-      ID_ROL: roles[0],
-      NOMBRE_ROL: roles[1],
+      id: roles[0],
+      nombre: roles[1],
     }));
     res.json(roles);
   } catch (error) {

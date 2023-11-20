@@ -17,22 +17,10 @@ const Sidebar = () => {
       sidebar.classList.toggle("close");
     };
 
-    // const searchBtnClickHandler = () => {
-    //   sidebar.classList.remove("close");
-    // };
-
-    const modeSwitchClickHandler = () => {
-      body.classList.toggle("dark");
-    };
-
     toggle.addEventListener("click", toggleClickHandler);
-    // searchBtn.addEventListener("click", searchBtnClickHandler);
-    modeSwitch.addEventListener("click", modeSwitchClickHandler);
 
     return () => {
       toggle.removeEventListener("click", toggleClickHandler);
-      // searchBtn.removeEventListener("click", searchBtnClickHandler);
-      modeSwitch.removeEventListener("click", modeSwitchClickHandler);
     };
   }, []);
 
@@ -96,8 +84,29 @@ const Sidebar = () => {
                 exact="true"
                 onClick={() => setIsActive("users")}
               >
-                <i className="fa-solid fa-gears icon"></i>
-                <span className="text nav-text">Usuarios y roles</span>
+                {/* <i className="fa-solid fa-gears icon"></i> */}
+                <i className="fa-solid fa-user icon"></i>
+                <span className="text nav-text">Usuarios</span>
+              </NavLink>
+            </li>
+            <li className={`navlink ${isActive === "roles" ? "activo" : ""}`}>
+              <NavLink
+                to="/Dashboard/Roles"
+                exact="true"
+                onClick={() => setIsActive("roles")}
+              >
+                <i className="fa-solid fa-user-shield icon"></i>
+                <span className="text nav-text">Roles</span>
+              </NavLink>
+            </li>
+            <li className={`navlink ${isActive === "Mas" ? "activo" : ""}`}>
+              <NavLink
+                to="/Dashboard/Mas"
+                exact="true"
+                onClick={() => setIsActive("Mas")}
+              >
+                <i className="fa-solid fa-grip icon"></i>
+                <span className="text nav-text">Mas</span>
               </NavLink>
             </li>
             <li className={`navlink ${isActive === "content" ? "activo" : ""}`}>
@@ -107,6 +116,7 @@ const Sidebar = () => {
                 onClick={() => setIsActive("content")}
               >
                 <i className="fa-regular fa-images icon"></i>
+
                 <span className="text nav-text">Contenido</span>
               </NavLink>
             </li>
@@ -120,7 +130,7 @@ const Sidebar = () => {
                 <span className="text nav-text">Salir</span>
               </Link>
             </li>
-            <li className="mode">
+            {/* <li className="mode">
               <div className="sun-moon">
                 <i className="fa-regular fa-moon icon moon"></i>
                 <i className="fa-regular fa-sun icon sun"></i>
@@ -128,7 +138,7 @@ const Sidebar = () => {
                   <span className="switch"></span>
                 </div>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

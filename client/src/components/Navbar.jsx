@@ -89,6 +89,21 @@ class Navbar extends Component {
                 </li>
               ))}
               {/* Renderiza el botón de inicio de sesión solo si no hay un token */}
+              {!token && (
+                <li className="content__item nav__item">
+                  <NavLink
+                    to="/Login"
+                    className={(navClass) =>
+                      navClass.isActive
+                        ? "link-nav link--leda active"
+                        : "link-nav link--leda"
+                    }
+                    data-text="Login"
+                  >
+                    <span>Login</span>
+                  </NavLink>
+                </li>
+              )}
               {token && (
                 <li className="content__item nav__item">
                   <NavLink
@@ -98,9 +113,9 @@ class Navbar extends Component {
                         ? "link-nav link--leda active"
                         : "link-nav link--leda"
                     }
-                    data-text="Administracion"
+                    data-text="Perfil"
                   >
-                    <span>Administracion</span>
+                    <span>Perfil</span>
                   </NavLink>
                 </li>
               )}

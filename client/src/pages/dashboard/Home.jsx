@@ -4,7 +4,7 @@ const HomeD = () => {
   return (
     <>
       <section>
-        <h2>Dashboard</h2>
+        <h2 className="h5">Dashboard</h2>
         <div className="row row-cols-2 row-cols-md-4 g-4">
           <div className="col">
             <div className="card h-100 shadow">

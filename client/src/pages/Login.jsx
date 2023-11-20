@@ -7,12 +7,12 @@ import Swal from "sweetalert2";
 import Navigation from "../components/Navbar";
 import Footer from "../components/Footer";
 
-
 const Login = () => {
   const valorInicial = {
     username: "",
     password: "",
   };
+
   const [formData, setFormData] = useState(valorInicial);
   const [redirectToHome, setRedirectToHome] = useState(false);
 
@@ -32,8 +32,8 @@ const Login = () => {
     e.preventDefault();
 
     const login = {
-      Nombre_Admin: formData.username,
-      Contrasena_Admin: formData.password,
+      nombre: formData.username,
+      contrasena: formData.password,
     };
 
     try {
@@ -45,7 +45,6 @@ const Login = () => {
       if (response.status === 200) {
         const token = response.data.token;
         Cookies.set("token", token);
-        console.log("Token:", token);
 
         Swal.fire({
           icon: "success",
@@ -81,7 +80,7 @@ const Login = () => {
     <>
       <Navigation />
       <section className="knowledge">
-        <div className="container-landing">
+        <div className="container-landing mb-4">
           <form className="form" onSubmit={enviarDatos}>
             <h2 className="form__title">Inicia Sesión</h2>
             <p className="form__paragraph">
@@ -90,7 +89,37 @@ const Login = () => {
                 Clic aquí
               </Link>
             </p>
-            <div className="form__container">
+            <div className="form-floating mb-3">
+              <input
+                type="text"
+                className="form-control"
+                id="floatingInput"
+                placeholder=""
+                name="username"
+                value={formData.username}
+                onChange={capturarDatos}
+                autoComplete="off"
+              />
+              <label htmlFor="floatingInput">Email address</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                type="password"
+                className="form-control"
+                id="floatingPassword"
+                placeholder=""
+                name="password"
+                value={formData.password}
+                onChange={capturarDatos}
+                autoComplete="off"
+              />
+              <label htmlFor="floatingPassword">Password</label>
+            </div>
+            <div className="d-grid gap-2 col-6 mx-auto">
+              <input type="submit" className="btn btn-about" value="enviar" />
+            </div>
+
+            {/* <div className="form__container">
               <div className="form__group">
                 <input
                   type="text"
@@ -103,7 +132,7 @@ const Login = () => {
                   autoComplete="off"
                 />
                 <label htmlFor="username" className="form__label">
-                  Usuario:
+                  Usuario o Correo
                 </label>
                 <span className="form__line"></span>
               </div>
@@ -119,12 +148,12 @@ const Login = () => {
                   autoComplete="off"
                 />
                 <label htmlFor="password" className="form__label">
-                  Contraseña:
+                  Contraseña
                 </label>
                 <span className="form__line"></span>
               </div>
               <input type="submit" className="form__submit" value="Enviar" />
-            </div>
+            </div> */}
           </form>
         </div>
       </section>
