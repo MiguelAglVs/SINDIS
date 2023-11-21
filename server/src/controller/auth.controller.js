@@ -95,6 +95,7 @@ authCtrl.login = async (req, res) => {
       segundo_apellido: checkAdminResult.rows[0][3],
       correo: checkAdminResult.rows[0][4],
       rol: checkAdminResult.rows[0][9],
+      nombre_rol: checkAdminResult.rows[0][10],
     });
     res.cookie("token", token);
     res.json({ message: "Inicio de sesión exitoso", token: token });
