@@ -4,11 +4,14 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-const AdminRoutes = require("./routes/admin");
+const UserRoutes = require("./routes/admin.routes");
 const AuthRoutes = require("./routes/auth.routes");
 const RolRoutes = require("./routes/rol.routes");
 const ContentRoutes = require("./routes/content.routes");
 const EpsRoutes = require("./routes/eps.routes");
+const DiscapRoutes = require("./routes/Discp.routes")
+const DiagnRoutes = require("./routes/diag.routes")
+const IncripRoutes = require("./routes/inscrip.routes")
 
 // Configuración
 app.set("port", process.env.PORT || 3000);
@@ -33,10 +36,13 @@ app.get("/", (req, res) => {
 });
 
 // Rutas API
-app.use("/api/admin", AdminRoutes);
+app.use("/api", UserRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", RolRoutes);
 app.use("/api", ContentRoutes);
 app.use("/api", EpsRoutes);
+app.use("/api", DiscapRoutes)
+app.use("/api", DiagnRoutes)
+app.use("/api", IncripRoutes)
 
 module.exports = app;

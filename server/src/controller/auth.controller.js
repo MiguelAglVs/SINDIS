@@ -14,17 +14,17 @@ authCtrl.register = async (req, res) => {
     telefono,
     correo,
     contrasena,
-    rol,
+    perfil,
   } = req.body;
   try {
     // Encriptar la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(contrasena, 10);
 
     // Definir el valor predeterminado del rol (1 si no se proporciona un rol específico)
-    const rolPredeterminado = rol || 1;
+    const perfilPredeterminado = perfil || 1;
 
-    const sql = `INSERT INTO usuarios (dni, nombre, p_apellido, s_apellido, correo, contrasenia, direccion, telefono, estado)
-                 VALUES (:cedula, :nombre, :apellido, :segundo_apellido, :correo, :contrasena, :direccion, :telefono, 1)`;
+    const sql = `INSERT INTO usuarios (dni, nombre, p_apellido, s_apellido, correo, contrasenia, direccion, telefono, estado, perfil)
+                  VALUES (:cedula, :nombre, :apellido, :segundo_apellido, :correo, :contrasena, :direccion, :telefono, 1, :perfil)`;
 
     await BD.executeQuery(
       sql,
@@ -37,7 +37,7 @@ authCtrl.register = async (req, res) => {
         telefono,
         correo,
         contrasena: hashedPassword,
-        // rol: rolPredeterminado,
+        perfil: perfilPredeterminado,
       },
       true
     );
@@ -62,9 +62,10 @@ authCtrl.login = async (req, res) => {
   const { nombre, contrasena } = req.body;
   try {
     // Consultar la base de datos para encontrar al administrador por nombre o correo
-    const checkAdminSql = `SELECT u.*, r.nombre
+    const checkAdminSql = `
+    SELECT u.*, p.nombre as nonbre_perfil
     FROM usuarios u
-    LEFT JOIN roles r ON u.rol = r.id
+    LEFT JOIN perfiles p ON u.perfil = p.id
     WHERE (u.nombre = :nombre OR u.correo = :nombre) AND u.estado = 1`;
 
     const checkAdminResult = await BD.executeQuery(
@@ -94,8 +95,8 @@ authCtrl.login = async (req, res) => {
       apellido: checkAdminResult.rows[0][2],
       segundo_apellido: checkAdminResult.rows[0][3],
       correo: checkAdminResult.rows[0][4],
-      rol: checkAdminResult.rows[0][9],
-      nombre_rol: checkAdminResult.rows[0][10],
+      perfil: checkAdminResult.rows[0][9],
+      nonbre_perfil: checkAdminResult.rows[0][10],
     });
     res.cookie("token", token);
     res.json({ message: "Inicio de sesión exitoso", token: token });
