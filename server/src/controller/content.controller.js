@@ -40,12 +40,12 @@ contentCtrl.getContents = async (req, res) => {
     `;
 
     const result = await BD.executeQuery(sql, {}, false);
-    const roles = result.rows.map((roles) => ({
-      id: roles[0],
-      ruta: roles[1],
-      nombre: roles[3],
+    const imagenes = result.rows.map((imagen) => ({
+      id: imagen[0],
+      ruta: imagen[1],
+      nombre: imagen[3],
     }));
-    res.json(roles);
+    res.json(imagenes);
   } catch (error) {
     console.error("Error al obtener las imagenes:", error.message);
     res.status(500).json({ error: "Error al obtener las imagenes:" });

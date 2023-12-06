@@ -2,11 +2,11 @@ const BD = require("../database");
 
 const disCtrl = {};
 
-disCtrl.createEps = async (req, res) => {
+disCtrl.createDisc = async (req, res) => {
   const { nombre } = req.body;
   try {
-    const sql = `INSERT INTO eps (id, nombre)
-				VALUES (seq_eps.NEXTVAL, :nombre)`;
+    const sql = `INSERT INTO discapacidades (id, nombre)
+				VALUES (seq_discapacidades.NEXTVAL, :nombre)`;
     await BD.executeQuery(
       sql,
       {
@@ -15,10 +15,10 @@ disCtrl.createEps = async (req, res) => {
       true
     );
     res.json({
-      message: "EPS creada correctamente",
+      message: "discapacidad creada correctamente",
     });
   } catch (error) {
-    console.error("Error al crear la EPS:", error);
+    console.error("Error al crear la discapacidad:", error);
     res.status(500).json({
       error: "Error interno del servidor",
       message: error.message,
@@ -26,31 +26,31 @@ disCtrl.createEps = async (req, res) => {
   }
 };
 
-disCtrl.getEps = async (req, res) => {
+disCtrl.getDisc = async (req, res) => {
   try {
-    const sql = `SELECT * FROM eps`;
+    const sql = `SELECT * FROM discapacidades`;
     const result = await BD.executeQuery(sql, [], false);
-    const eps = result.rows.map((eps) => ({
-      id: eps[0],
-      nombre: eps[1],
+    const discapacidades = result.rows.map((discapacidades) => ({
+      id: discapacidades[0],
+      nombre: discapacidades[1],
     }));
-    res.json(eps);
+    res.json(discapacidades);
   } catch (error) {
-    console.error("Error al obtener las EPS:", error.message);
-    res.status(500).json({ error: "Error al obtener las EPS:" });
+    console.error("Error al obtener las discapacidades:", error.message);
+    res.status(500).json({ error: "Error al obtener las discapacidades:" });
   }
 };
 
-disCtrl.delEps = async (req, res) => {
-  const epsId = req.params.id;
+disCtrl.delDisc = async (req, res) => {
+  const discapacidadId = req.params.id;
   try {
-    const sql = `DELETE FROM eps WHERE id = :epsId`;
-    await BD.executeQuery(sql, { epsId }, true);
+    const sql = `DELETE FROM discapacidades WHERE id = :discapacidadId`;
+    await BD.executeQuery(sql, { discapacidadId }, true);
     res.json({
-      message: "EPS eliminada correctamente",
+      message: "discapacidad eliminada correctamente",
     });
   } catch (error) {
-    console.error("Error al eliminar la EPS:", error);
+    console.error("Error al eliminar la discapacidad:", error);
     res.status(500).json({
       error: "Error interno del servidor",
       message: error.message,
@@ -58,17 +58,17 @@ disCtrl.delEps = async (req, res) => {
   }
 };
 
-disCtrl.updateEps = async (req, res) => {
-  const epsId = req.params.id;
+disCtrl.updateDisc = async (req, res) => {
+  const discapacidadId = req.params.id;
   const { nombre } = req.body;
   try {
-    const sql = `UPDATE eps SET nombre = :nombre WHERE id = :epsId`;
-    await BD.executeQuery(sql, { epsId, nombre }, true);
+    const sql = `UPDATE discapacidades SET nombre = :nombre WHERE id = :discapacidadId`;
+    await BD.executeQuery(sql, { discapacidadId, nombre }, true);
     res.json({
-      message: "EPS actualizada correctamente",
+      message: "discapacidades actualizada correctamente",
     });
   } catch (error) {
-    console.error("Error al actualizar la EPS:", error);
+    console.error("Error al actualizar la discapacidades:", error);
     res.status(500).json({
       error: "Error interno del servidor",
       message: error.message,
