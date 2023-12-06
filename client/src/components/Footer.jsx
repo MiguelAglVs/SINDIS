@@ -42,27 +42,6 @@ const Footer = () => {
               ))}
             </ul>
           </nav>
-
-          {/* <form
-            className="footer__form"
-            action="https://formspree.io/f/mknkkrkj"
-            method="POST"
-          >
-            <h2 className="footer__newsletter">Suscribete a SINDIS</h2>
-            <div className="footer__inputs">
-              <input
-                type="email"
-                placeholder="Email:"
-                className="footer__input"
-                name="_replyto"
-              />
-              <input
-                type="submit"
-                value="Registrate"
-                className="footer__submit"
-              />
-            </div>
-          </form> */}
         </section>
 
         <section className="footer__copy container p-2">

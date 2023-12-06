@@ -2,12 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDNeKmgMMonXR1gAFGdQExSpNjx2No7EM0",
-  authDomain: "sindis-firebase.firebaseapp.com",
-  projectId: "sindis-firebase",
-  storageBucket: "sindis-firebase.appspot.com",
-  messagingSenderId: "859247543909",
-  appId: "1:859247543909:web:dd81d54665a5373102e88c",
+  apiKey: "AIzaSyA5mzJAksS3BTOrVvacA_-5nflt2r1j2fk",
+  authDomain: "sindis-firebase-181b1.firebaseapp.com",
+  projectId: "sindis-firebase-181b1",
+  storageBucket: "sindis-firebase-181b1.appspot.com",
+  messagingSenderId: "937963733281",
+  appId: "1:937963733281:web:dc75743caeaac3afda3e60",
+  measurementId: "G-R7G74NRYB2",
 };
 
 const app = initializeApp(firebaseConfig);

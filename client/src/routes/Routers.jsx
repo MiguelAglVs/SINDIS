@@ -9,7 +9,6 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Error from "../pages/Error";
 import Podcast from "../pages/Podcast";
-import Inscription from "../pages/Inscription";
 import Dashboard from "../pages/Dashboard";
 
 const Routers = () => {
@@ -21,7 +20,6 @@ const Routers = () => {
       <Route path="/Home" element={<Home />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Podcast" element={<Podcast />} />
-      <Route path="/Inscription" element={<Inscription />} />
       <Route path="/Signup" element={<Signup />} />
       <Route
         path="/Dashboard/*"

@@ -100,7 +100,7 @@ class Home extends Component {
                 discapacidad. ¡Esperamos contar contigo en nuestro semillero!
               </p>
 
-              <Link to="/Inscription"
+              <Link to="Dashboard/Inscription"
                 className="btn btn-about"
               >
                 Únete a SINDIS

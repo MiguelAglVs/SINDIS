@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -8,20 +8,27 @@ import Navigation from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const Login = () => {
+  const navigate = useNavigate();
   const valorInicial = {
     username: "",
     password: "",
   };
 
   const [formData, setFormData] = useState(valorInicial);
-  const [redirectToHome, setRedirectToHome] = useState(false);
 
   useEffect(() => {
+    // Verificar si hay un token almacenado en las cookies
     const token = Cookies.get("token");
     if (token) {
-      setRedirectToHome(true);
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      // Redirige automáticamente según el perfil del usuario
+      if (tokenData.perfil === 1) {
+        navigate("/Dashboard/Inscription");
+      } else {
+        navigate("/Dashboard/Admin");
+      }
     }
-  }, []);
+  }, [navigate]);
 
   const capturarDatos = (e) => {
     const { name, value } = e.target;
@@ -44,7 +51,7 @@ const Login = () => {
 
       if (response.status === 200) {
         const token = response.data.token;
-        Cookies.set("token", token);
+        Cookies.set("token", token, { expires: 1 }); // La cookie expirará en 1 día
 
         Swal.fire({
           icon: "success",
@@ -52,7 +59,14 @@ const Login = () => {
           text: "¡Bienvenido!",
         }).then((result) => {
           if (result.isConfirmed) {
-            setRedirectToHome(true);
+            const tokenData = JSON.parse(atob(token.split(".")[1]));
+
+            if (tokenData.perfil === 1) {
+              navigate("/Dashboard/Inscription");
+            } else {
+              // Redirige a la página para perfiles diferentes de 1
+              navigate("/Dashboard/Admin");
+            }
           }
         });
       } else {
@@ -61,6 +75,9 @@ const Login = () => {
           title: "Error",
           text: "Credenciales incorrectas. Inténtalo de nuevo.",
         });
+
+        // Eliminar la cookie en caso de error
+        Cookies.remove("token");
       }
     } catch (error) {
       console.error("Error en la solicitud POST:", error);
@@ -69,12 +86,11 @@ const Login = () => {
         title: "Error",
         text: "Error al iniciar sesión. Por favor, inténtalo de nuevo.",
       });
+
+      // Eliminar la cookie en caso de error
+      Cookies.remove("token");
     }
   };
-
-  if (redirectToHome) {
-    window.location.href = "/Dashboard";
-  }
 
   return (
     <>
@@ -118,42 +134,6 @@ const Login = () => {
             <div className="d-grid gap-2 col-6 mx-auto">
               <input type="submit" className="btn btn-about" value="enviar" />
             </div>
-
-            {/* <div className="form__container">
-              <div className="form__group">
-                <input
-                  type="text"
-                  id="username"
-                  className="form__input"
-                  placeholder=""
-                  name="username"
-                  value={formData.username}
-                  onChange={capturarDatos}
-                  autoComplete="off"
-                />
-                <label htmlFor="username" className="form__label">
-                  Usuario o Correo
-                </label>
-                <span className="form__line"></span>
-              </div>
-              <div className="form__group">
-                <input
-                  type="password"
-                  id="password"
-                  className="form__input"
-                  placeholder=""
-                  name="password"
-                  value={formData.password}
-                  onChange={capturarDatos}
-                  autoComplete="off"
-                />
-                <label htmlFor="password" className="form__label">
-                  Contraseña
-                </label>
-                <span className="form__line"></span>
-              </div>
-              <input type="submit" className="form__submit" value="Enviar" />
-            </div> */}
           </form>
         </div>
       </section>

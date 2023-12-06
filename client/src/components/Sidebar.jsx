@@ -88,12 +88,12 @@ const Sidebar = () => {
             <ul>
               {perfil !== 1 && (
                 <>
-                  <li className={activeMenu === "/Dashboard" ? "active" : ""}>
+                  {/* <li className={activeMenu === "/Dashboard" ? "active" : ""}>
                     <NavLink to="/Dashboard">
                       <i className="fa-solid fa-house icon"></i>
                       <span className="text">Dashboard</span>
                     </NavLink>
-                  </li>
+                  </li> */}
 
                   <li
                     className={
@@ -105,7 +105,7 @@ const Sidebar = () => {
                       <span className="text">Usuarios</span>
                     </NavLink>
                   </li>
-                  <li className={isRolesSubMenuOpen ? "active" : ""}>
+                  {/* <li className={isRolesSubMenuOpen ? "active" : ""}>
                     <NavLink onClick={handleRolesClick}>
                       <i className="fa-solid fa-id-card-clip icon"></i>
                       <span className="text">Acceso</span>
@@ -156,7 +156,7 @@ const Sidebar = () => {
                         </NavLink>
                       </li>
                     </ul>
-                  </li>
+                  </li> */}
                 </>
               )}
               <li
@@ -209,13 +209,13 @@ const Sidebar = () => {
                         </NavLink>
                       </li>
                       <li>
-                        <NavLink to="" onClick={handleSubMenuLinkClick}>
+                        <NavLink to="/Dashboard/Diagnosticos" onClick={handleSubMenuLinkClick}>
                           <samp className="text">Diagnosticos</samp>
                         </NavLink>
                       </li>
                       <li>
-                        <NavLink to="" onClick={handleSubMenuLinkClick}>
-                          <samp className="text">Discaoacidades</samp>
+                        <NavLink to="/Dashboard/Discapacidades" onClick={handleSubMenuLinkClick}>
+                          <samp className="text">Discapacidades</samp>
                         </NavLink>
                       </li>
                     </ul>

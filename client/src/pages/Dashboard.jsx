@@ -3,9 +3,11 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/NavDash";
 import Home from "./dashboard/Home";
 import Admin from "./dashboard/Admin";
+import Inscripcion from "./dashboard/Inscripcion";
 import Content from "./dashboard/Content";
-import Roles from "./dashboard/Roles";
 import Eps from "./dashboard/Eps";
+import Discapacidades from "./dashboard/Discapacidades";
+import Diagnosticos from "./dashboard/Diagnosticos";
 import Error from "./Error";
 
 import { Routes, Route } from "react-router-dom";
@@ -20,16 +22,16 @@ const Dashboard = () => {
           <Sidebar />
         </div>
         <section className="content w-100 bg-body-tertiary">
-          {/* <div className="navbar navbar-expand-lg shadow">
-            <Navbar />
-          </div> */}
           <div className="container-fluid p-3">
             <Routes>
               <Route path="" exact={true} element={<Home />} />
               <Route path="Admin" exact={true} element={<Admin />} />
+              <Route path="Admin" exact={true} element={<Admin />} />
+              <Route path="Inscription" exact={true} element={<Inscripcion />} />
               <Route path="Content" exact={true} element={<Content />} />
-              <Route path="Roles" exact={true} element={<Roles />} />
               <Route path="Eps" exact={true} element={<Eps />} />
+              <Route path="Discapacidades" exact={true} element={<Discapacidades />} />
+              <Route path="Diagnosticos" exact={true} element={<Diagnosticos />} />
               <Route path="*" element={<Error />} />
             </Routes>
           </div>
