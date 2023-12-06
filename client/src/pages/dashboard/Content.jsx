@@ -185,7 +185,7 @@ const Content = () => {
               </table>
               <div className="d-flex justify-content-between">
                 <button className="btn btn-primary" onClick={handleShow}>
-                  Agregar Imagen
+                  Agregar
                 </button>
                 <ul className="pagination">
                   {Array.from({

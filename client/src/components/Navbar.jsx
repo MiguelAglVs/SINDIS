@@ -107,7 +107,7 @@ class Navbar extends Component {
               {token && (
                 <li className="content__item nav__item">
                   <NavLink
-                    to="/Dashboard"
+                    to="/Dashboard/Admin"
                     className={(navClass) =>
                       navClass.isActive
                         ? "link-nav link--leda active"

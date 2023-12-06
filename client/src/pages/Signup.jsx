@@ -153,7 +153,7 @@ const Signup = () => {
         correo: values.Correo,
         contrasena: values.Pass,
       };
-
+      console.log(newUser);
       try {
         await axios.post("http://localhost:3000/api/register", newUser);
         Swal.fire({

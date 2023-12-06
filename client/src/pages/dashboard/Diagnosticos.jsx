@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const Eps = () => {
+const Diagnosticos = () => {
   const [nombre, setNombre] = useState("");
   const [editNombre, setEditNombre] = useState("");
   const [epsData, setEpsData] = useState([]);
@@ -25,7 +25,9 @@ const Eps = () => {
 
   const fetchEpsData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/eps");
+      const response = await axios.get(
+        "http://localhost:3000/api/Diagnosticos"
+      );
       setEpsData(response.data);
     } catch (error) {
       console.error("Error al obtener datos de EPS:", error);
@@ -35,9 +37,13 @@ const Eps = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/eps", {
-        nombre,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/Diagnosticos",
+        {
+          nombre,
+        }
+      );
+      console.log(response);
       Swal.fire({
         icon: "success",
         title: "¡Éxito!",
@@ -58,7 +64,7 @@ const Eps = () => {
 
   const handleDelete = async (epsId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/eps/${epsId}`);
+      await axios.delete(`http://localhost:3000/api/Diagnosticos/${epsId}`);
       Swal.fire({
         icon: "success",
         title: "¡Éxito!",
@@ -86,7 +92,7 @@ const Eps = () => {
     event.preventDefault();
     try {
       if (editEpsId) {
-        await axios.put(`http://localhost:3000/api/eps/${editEpsId}`, {
+        await axios.put(`http://localhost:3000/api/Diagnosticos/${editEpsId}`, {
           nombre: editNombre,
         });
         Swal.fire({
@@ -172,7 +178,7 @@ const Eps = () => {
           </table>
           <div className="d-flex justify-content-between">
             <Button variant="primary" onClick={handleAdd}>
-              Agregar EPS
+              Agregar
             </Button>
             <ul className="pagination justify-content-end">
               {Array.from({
@@ -197,7 +203,7 @@ const Eps = () => {
         </div>
         <Modal show={showAddModal} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Agregar EPS</Modal.Title>
+            <Modal.Title>Agregar Discapacidad</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={handleSubmit}>
@@ -228,40 +234,38 @@ const Eps = () => {
         </Modal>
       </div>
 
-
-        <Modal show={showEditModal} onHide={handleClose} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Ediar</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={handleEditSubmit}>
-              <div className="mb-3">
-                <label htmlFor="nombre" className="form-label">
-                  Nombre:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="nombre"
-                  value={editNombre}
-                  onChange={(e) => setEditNombre(e.target.value)}
-                  required
-                />
-              </div>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleEditSubmit}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
+      <Modal show={showEditModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleEditSubmit}>
+            <div className="mb-3">
+              <label htmlFor="nombre" className="form-label">
+                Nombre:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="nombre"
+                value={editNombre}
+                onChange={(e) => setEditNombre(e.target.value)}
+                required
+              />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEditSubmit}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
 
-export default Eps;
+export default Diagnosticos;
