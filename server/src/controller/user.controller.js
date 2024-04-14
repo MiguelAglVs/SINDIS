@@ -12,7 +12,7 @@ userCtrl.getAdmins = async (req, res) => {
     WHERE u.estado = 1
     ORDER BY u.dni DESC`;
 
-    const result = await BD.executeQuery(sql, [], false);
+    const result = await BD.executeQuery(sql, [], false);    
     const usuarios = result.rows.map((usuario) => ({
       dni: usuario[0],
       nombre: usuario[1],
