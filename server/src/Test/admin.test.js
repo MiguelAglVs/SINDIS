@@ -11,6 +11,8 @@ const bcrypt = require("bcrypt");
 
 jest.mock('../database');
 jest.mock('bcrypt');
+jest.mock('../database');
+
 
 
 // Mock de datos de solicitud y respuesta
@@ -79,15 +81,15 @@ describe('Admin Controller Tests', () => {
       const req = {};
       req.params = {};
       req.body = {
-        cedula: "ejemplo",
-        nombre: "ejemplo",
-        apellido: "ejemplo",
-        segundo_apellido: "ejemplo",
-        direccion: "ejemplo",
-        telefono: "ejemplo",
-        correo: "ejemplo",
-        contrasena: "ejemplo",
-        perfil: "ejemplo"
+        cedula: "159",
+        nombre: "Pablo",
+        apellido: "Perez",
+        segundo_apellido: "Montoya",
+        direccion: "calle 123o",
+        telefono: "9864912",
+        correo: "pabloperez@gmail.com",
+        contrasena: "queso123",
+        perfil: "administracion"
       };
       const res = mockRes();
 
@@ -114,6 +116,71 @@ describe('Admin Controller Tests', () => {
       await getAdmins(req, res);
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ error: 'Error al obtener usuarios' });
+    });
+  });
+
+
+  // Mock para el objeto `req`
+  const req = {
+    params: {
+      id: '123456789' // ID de ejemplo
+    }
+  };
+
+  // Mock para el objeto `res`
+  const res = {
+    status: jest.fn(() => res),
+    json: jest.fn()
+  };
+
+  describe('deleteAdmin', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('debería eliminar el usuario correctamente', async () => {
+      // Mock de BD.executeQuery para simular la respuesta de usuario encontrado
+      BD.executeQuery.mockResolvedValue({
+        rows: [
+          [
+            '12345678A',
+            'John',
+            'Doe',
+            'Smith',
+            'john.doe@example.com',
+            'hashedPassword',
+            '123 Main St',
+            '123456789',
+            1,
+            '',
+            'admin'
+          ]
+        ]
+      });
+
+      await deleteAdmin(req, res);
+
+      expect(res.json).toHaveBeenCalledWith({ message: "Usuario eliminado" });
+    });
+
+    it('debería devolver un error 404 si el usuario no existe', async () => {
+      // Mock de BD.executeQuery para simular que no se encuentra el usuario
+      BD.executeQuery.mockResolvedValueOnce(undefined);
+
+      await deleteAdmin(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ error: "Usuario no encontrado" });
+    });
+
+    it('debería devolver un error 500 si hay un error interno', async () => {
+      // Mock de BD.executeQuery para simular un error interno
+      BD.executeQuery.mockRejectedValueOnce(new Error('Error interno'));
+
+      await deleteAdmin(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: "Error interno del servidor" });
     });
   });
 
